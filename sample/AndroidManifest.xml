@@ -5,7 +5,7 @@
     android:versionName="2.3.1">
 
     <uses-sdk
-        android:minSdkVersion="4"
+        android:minSdkVersion="8"
         android:targetSdkVersion="15" />
 
     <application
@@ -16,13 +16,16 @@
             android:name=".ListSamples"
             android:label="ViewPager Indicator">
 
-            <intent-filter>
+        </activity>
+
+        <activity
+            android:name=".RichTitle"
+            android:label="ViewPager Indicator">
+			<intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-
 
         <!-- CIRCLE INDICATOR -->
         <activity
