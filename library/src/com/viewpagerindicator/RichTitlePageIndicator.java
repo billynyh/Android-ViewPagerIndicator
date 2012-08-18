@@ -24,9 +24,13 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Rect;
+import android.graphics.Shader;
+import android.graphics.Shader.TileMode;
 import android.graphics.Typeface;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -442,7 +446,8 @@ public class RichTitlePageIndicator extends View implements PageIndicator {
                     //Fade out/in unselected text as the selected text fades in/out
                     mPaintText.setAlpha(colorTextAlpha - (int)(colorTextAlpha * selectedPercent));
                 }
-                canvas.drawText(pageTitle, 0, pageTitle.length(), bound.left, bound.bottom + mTopPadding, mPaintText);
+                //canvas.drawText(pageTitle, 0, pageTitle.length(), bound.left, bound.bottom + mTopPadding, mPaintText);
+                //drawItem(canvas, i, bound, mPaintText, currentPage && currentSelected);
 
                 //If we are within the selected bounds draw the selected text
                 if (currentPage && currentSelected) {
@@ -450,6 +455,15 @@ public class RichTitlePageIndicator extends View implements PageIndicator {
                     mPaintText.setAlpha((int)((mColorSelected >>> 24) * selectedPercent));
                     //canvas.drawText(pageTitle, 0, pageTitle.length(), bound.left, bound.bottom + mTopPadding, mPaintText);
                     drawItem(canvas, i, bound, mPaintText, true);
+                }else{
+                    if (i == page - 1){
+                        drawLeftItem(canvas, i, bound, mPaintText, false);
+                    	//drawItem(canvas, i, bound, mPaintText, false);
+                    } else if (i == page + 1) {
+                        drawRightItem(canvas, i ,bound, mPaintText, false);
+                    } else {
+                        drawItem(canvas, i, bound, mPaintText, false);
+                    }
                 }
             }
         }
@@ -491,6 +505,28 @@ public class RichTitlePageIndicator extends View implements PageIndicator {
         }
     }
 
+    private void drawLeftItem(Canvas canvas, int pos, Rect bound, Paint paint, boolean drawIcon){
+        int c1 = paint.getColor();
+        int c2 = 0;
+        Paint blur = new Paint(paint);
+        Shader shader = new LinearGradient(bound.left, 0, bound.right, 0, 
+        		new int[]{c2, c1},
+        		new float[]{0, 1}, TileMode.CLAMP); 
+        blur.setShader(shader); 
+        drawItem(canvas, pos, bound, blur, drawIcon);
+        //paint.setShader(null);
+    }
+    private void drawRightItem(Canvas canvas, int pos, Rect bound, Paint paint, boolean drawIcon){
+    	int c1 = paint.getColor();
+        int c2 = 0;
+        Paint blur = new Paint(paint);
+        Shader shader = new LinearGradient(bound.left, 0, bound.right, 0, 
+        		new int[]{c1, c2},
+        		new float[]{0, 1}, TileMode.CLAMP); 
+        blur.setShader(shader); 
+        drawItem(canvas, pos, bound, blur, drawIcon);
+        //paint.setShader(null);
+    }
     private void drawItem(Canvas canvas, int pos, Rect bound, Paint paint, boolean drawIcon){
         String title = getTitle(pos);
         Bitmap icon = getIcon(pos);
@@ -511,8 +547,8 @@ public class RichTitlePageIndicator extends View implements PageIndicator {
             offset = iconWidth;
         }
         canvas.drawText(title, bound.left + offset, bound.bottom + mTopPadding, paint);
-
     }
+
 
     public boolean onTouchEvent(android.view.MotionEvent ev) {
         if (super.onTouchEvent(ev)) {

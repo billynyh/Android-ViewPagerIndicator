@@ -16,16 +16,24 @@
 
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
+    <LinearLayout 
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:paddingBottom="2dp"
+    >
     <com.viewpagerindicator.RichTitlePageIndicator
         android:id="@+id/indicator"
         android:padding="10dip"
         android:layout_height="wrap_content"
         android:layout_width="fill_parent"
+        app:footerLineHeight="0dp"
         />
+    </LinearLayout>
     <android.support.v4.view.ViewPager
         android:id="@+id/pager"
         android:layout_width="fill_parent"
